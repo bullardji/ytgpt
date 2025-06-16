@@ -37,6 +37,7 @@ class VideoAutomationUI(AbstractComponentUI):
         self.voice_module = None
         self.language = None
         self.script = ""
+        self.topic = ""
         self.video_html = ""
         self.videoVisible = False
         self.video_automation = None
@@ -58,7 +59,8 @@ class VideoAutomationUI(AbstractComponentUI):
             return "Your Pexels API key is missing. Please go to the config tab and enter the API key."
 
     def generate_script(self, message, language):
-        return gpt_chat_video.generateScript(message, language)
+        self.topic, self.script = gpt_chat_video.generateScript(message, language)
+        return self.script
 
     def correct_script(self, script, correction):
         return gpt_chat_video.correctScript(script, correction)
@@ -124,7 +126,10 @@ class VideoAutomationUI(AbstractComponentUI):
             elif self.state == Chatstate.ASK_DESCRIPTION:
                 self.script = self.generate_script(message, self.language.value)
                 self.state = Chatstate.ASK_SATISFACTION
-                bot_message = f"📝 Here is your generated script: \n\n--------------\n{self.script}\n\n・Are you satisfied with the script and ready to proceed with creating the video? Please respond with 'YES' or 'NO'. 👍👎"
+                bot_message = (
+                    f"📝 Topic: {self.topic}\n\nHere is your generated script:\n\n--------------\n{self.script}\n\n"
+                    "・Are you satisfied with the script and ready to proceed with creating the video? Please respond with 'YES' or 'NO'. 👍👎"
+                )
             elif self.state == Chatstate.ASK_SATISFACTION:
                 if "yes" in message.lower():
                     self.state = Chatstate.MAKE_VIDEO
@@ -175,6 +180,7 @@ class VideoAutomationUI(AbstractComponentUI):
         self.isVertical = None
         self.language = None
         self.script = ""
+        self.topic = ""
         self.video_html = ""
         self.videoVisible = False
         return [[None, "🤖 Welcome to ShortGPT! 🚀 I'm a python framework aiming to simplify and automate your video editing tasks.\nLet's get started! 🎥🎬\n\n Do you want your video to be in landscape or vertical format? (landscape OR vertical)"]]
@@ -184,6 +190,7 @@ class VideoAutomationUI(AbstractComponentUI):
         self.isVertical = None
         self.language = None
         self.script = ""
+        self.topic = ""
         self.video_html = ""
         self.videoVisible = False
 
