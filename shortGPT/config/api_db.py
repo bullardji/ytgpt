@@ -8,6 +8,7 @@ class ApiProvider(enum.Enum):
     GEMINI = "GEMINI_API_KEY"
     ELEVEN_LABS = "ELEVENLABS_API_KEY"
     PEXELS = "PEXELS_API_KEY"
+    LOCAL_LLM = "LOCAL_LLM_PATH"
 
 
 class ApiKeyManager:
